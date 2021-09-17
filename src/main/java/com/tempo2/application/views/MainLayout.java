@@ -39,12 +39,14 @@ import com.tempo2.application.views.imagelist.ImageListView;
 import com.tempo2.application.views.checkoutform.CheckoutFormView;
 import com.tempo2.application.views.chat.ChatView;
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.server.InitialPageSettings;
+import com.vaadin.flow.server.PageConfigurator;
 
 /**
  * The main view is a top-level placeholder for other views.
  */
 @PageTitle("Main")
-public class MainLayout extends AppLayout {
+public class MainLayout extends AppLayout{
 
     public static class MenuItemInfo {
 

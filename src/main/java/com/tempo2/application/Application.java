@@ -21,7 +21,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
  */
 @SpringBootApplication
 @Theme(value = "tempo2", variant = Lumo.DARK)
-@PWA(name = "Tempo 2", shortName = "Tempo 2", offlineResources = {"images/logo.png"})
+@PWA(name = "Tempo 2", shortName = "Tempo 2", offlineResources = {"images/logo.png"}, iconPath="timetrack-icon.png")
 @Push
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 @NpmPackage(value = "leaflet", version = "^1.7.1")

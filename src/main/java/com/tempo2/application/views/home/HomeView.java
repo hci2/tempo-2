@@ -15,12 +15,12 @@ import com.vaadin.flow.router.RouteAlias;
 public class HomeView extends VerticalLayout {
 
     public HomeView() {
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
+        Image img = new Image("images/timetrack-logo.png", "Tempo 2 logo");
+        img.setWidth("400px");
         add(img);
 
-        add(new H2("This place intentionally left empty"));
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
+        add(new H2("Tempo 2"));
+        add(new Paragraph("The application can be used to record and see time tracks of employees."));
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
