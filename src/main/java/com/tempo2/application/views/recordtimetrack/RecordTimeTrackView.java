@@ -1,10 +1,18 @@
 package com.tempo2.application.views.recordtimetrack;
 
+import com.tempo2.application.dto.PersonTimeTrack;
+import com.tempo2.application.service.impl.HttpService;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.tempo2.application.views.MainLayout;
@@ -13,18 +21,44 @@ import com.tempo2.application.views.MainLayout;
 @Route(value = "record-time-track", layout = MainLayout.class)
 public class RecordTimeTrackView extends HorizontalLayout {
 
-    private TextField name;
-    private Button sayHello;
+    private EmailField email = new EmailField("Email address");
+    private DateTimePicker start = new DateTimePicker("Work Start Time");
+    private DateTimePicker end = new DateTimePicker("Work End Time");
 
-    public RecordTimeTrackView() {
+    private Button record = new Button("Record");
+
+    private Binder<PersonTimeTrack> binder = new Binder<>(PersonTimeTrack.class);
+
+    public RecordTimeTrackView(HttpService httpService) {
         addClassName("record-time-track-view");
-        name = new TextField("Your name");
-        sayHello = new Button("Say hello");
-        add(name, sayHello);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
-        sayHello.addClickListener(e -> {
-            Notification.show("Hello " + name.getValue());
+
+        add(createTitle());
+        add(createFormLayout());
+        add(createButtonLayout());
+
+        record.addClickListener(e -> {
+            httpService.postTimeTrackRecord(binder.getBean());
+            Notification.show("Time track for " + email.getValue() + " recorded.", 5, Notification.Position.MIDDLE);
         });
+    }
+
+    private Component createButtonLayout() {
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.addClassName("button-layout");
+        record.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        buttonLayout.add(record);
+        return buttonLayout;
+    }
+
+    private Component createTitle() {
+        return new H1("Record Employee Work Time Track");
+    }
+
+    private Component createFormLayout() {
+        FormLayout formLayout = new FormLayout();
+        email.setErrorMessage("Please enter a valid email address");
+        formLayout.add(email, start, end);
+        return formLayout;
     }
 
 }
