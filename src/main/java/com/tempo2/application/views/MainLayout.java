@@ -2,15 +2,11 @@ package com.tempo2.application.views;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentUtil;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.Footer;
@@ -18,19 +14,11 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
-import com.tempo2.application.views.MainLayout;
 import com.tempo2.application.views.home.HomeView;
 import com.tempo2.application.views.recordtimetrack.RecordTimeTrackView;
-import com.tempo2.application.views.showtimetrack.ShowtimetrackView;
+import com.tempo2.application.views.showtimetrack.ShowTimeTrackView;
 import com.tempo2.application.views.personform.PersonFormView;
 import com.tempo2.application.views.creditcardform.CreditCardFormView;
 import com.tempo2.application.views.cardlist.CardListView;
@@ -38,9 +26,6 @@ import com.tempo2.application.views.map.MapView;
 import com.tempo2.application.views.imagelist.ImageListView;
 import com.tempo2.application.views.checkoutform.CheckoutFormView;
 import com.tempo2.application.views.chat.ChatView;
-import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.server.InitialPageSettings;
-import com.vaadin.flow.server.PageConfigurator;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -128,7 +113,7 @@ public class MainLayout extends AppLayout{
 
                 new MenuItemInfo("Record Time Track", "la la-calendar-plus", RecordTimeTrackView.class), //
 
-                new MenuItemInfo("Show time track", "la la-business-time", ShowtimetrackView.class), //
+                new MenuItemInfo("Show time track", "la la-business-time", ShowTimeTrackView.class), //
 
                 new MenuItemInfo("Person Form", "la la-user", PersonFormView.class), //
 

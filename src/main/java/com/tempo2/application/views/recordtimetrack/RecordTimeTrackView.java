@@ -37,8 +37,8 @@ public class RecordTimeTrackView extends HorizontalLayout {
         add(createButtonLayout());
 
         record.addClickListener(e -> {
-            httpService.postTimeTrackRecord(binder.getBean());
-            Notification.show("Time track for " + email.getValue() + " recorded.", 5, Notification.Position.MIDDLE);
+            httpService.postTimeTrackRecord(binder.getBean()); //TODO: implement logic
+            Notification.show("Time track for " + email.getValue() + " recorded.", 5000, Notification.Position.MIDDLE);
         });
     }
 

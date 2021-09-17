@@ -3,34 +3,61 @@ package com.tempo2.application.views.showtimetrack;
 import java.util.Arrays;
 import java.util.List;
 
+import com.tempo2.application.dto.PersonTimeTrack;
+import com.tempo2.application.service.impl.HttpService;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.tempo2.application.views.MainLayout;
 
-@PageTitle("Show time track")
+@PageTitle("Show Time Track")
 @Route(value = "show-time-track", layout = MainLayout.class)
-public class ShowtimetrackView extends Div implements AfterNavigationObserver {
+public class ShowTimeTrackView extends Div implements AfterNavigationObserver {
 
     Grid<Person> grid = new Grid<>();
 
-    public ShowtimetrackView() {
-        addClassName("showtimetrack-view");
+    private EmailField email = new EmailField("Email address");
+    private Button search = new Button("Search");
+
+    //Grid<PersonTimeTrack> grid = new Grid<>();
+
+    public ShowTimeTrackView(HttpService httpService) {
+        addClassName("show-time-track-view");
+
+        add(createTitle());
+        email.setErrorMessage("Please enter a valid email address");
+        add(email);
+        add(search);
+
         setSizeFull();
         grid.setHeight("100%");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS);
-        grid.addComponentColumn(person -> createCard(person));
+        grid.addComponentColumn(person -> createCard(person)); //TODO: replace with last 10 PersonTimeTrack objects via httpService
         add(grid);
+
+        search.addClickListener(e -> {
+            httpService.getTimeTrackRecordsFrom(email.getValue()); //TODO: implement logic and return result
+            Notification.show("Time tracks for " + email.getValue() + " are shown.", 5000, Notification.Position.MIDDLE);
+        });
+    }
+
+    private Component createTitle() {
+        return new H1("Show Employee Work Time Track");
     }
 
     private HorizontalLayout createCard(Person person) {
