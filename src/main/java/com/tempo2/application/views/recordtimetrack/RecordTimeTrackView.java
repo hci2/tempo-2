@@ -1,5 +1,6 @@
 package com.tempo2.application.views.recordtimetrack;
 
+import com.tempo2.application.data.entity.SamplePerson;
 import com.tempo2.application.dto.PersonTimeTrack;
 import com.tempo2.application.service.impl.HttpService;
 import com.vaadin.flow.component.Component;
@@ -35,19 +36,13 @@ public class RecordTimeTrackView extends HorizontalLayout {
         add(createTitle());
         add(createFormLayout());
         add(createButtonLayout());
+        binder.bindInstanceFields(this);
+        clearForm();
 
         record.addClickListener(e -> {
-            httpService.postTimeTrackRecord(binder.getBean()); //TODO: implement logic
+            httpService.postTimeTrackRecord(binder.getBean()); //TODO: Request is not working, always getting 400, something is wrong with the headers
             Notification.show("Time track for " + email.getValue() + " recorded.", 5000, Notification.Position.MIDDLE);
         });
-    }
-
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
-        record.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(record);
-        return buttonLayout;
     }
 
     private Component createTitle() {
@@ -59,6 +54,18 @@ public class RecordTimeTrackView extends HorizontalLayout {
         email.setErrorMessage("Please enter a valid email address");
         formLayout.add(email, start, end);
         return formLayout;
+    }
+
+    private Component createButtonLayout() {
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.addClassName("button-layout");
+        record.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        buttonLayout.add(record);
+        return buttonLayout;
+    }
+
+    private void clearForm() {
+        binder.setBean(new PersonTimeTrack());
     }
 
 }

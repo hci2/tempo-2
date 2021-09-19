@@ -1,15 +1,14 @@
 package com.tempo2.application.dto;
 
-import com.tempo2.application.data.AbstractEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.Entity;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class PersonTimeTrack {
 
     private String email;
-    private List<TimeTrack> timeTracks = new ArrayList<>();
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     public String getEmail() {
         return email;
@@ -18,19 +17,39 @@ public class PersonTimeTrack {
         this.email = email;
     }
 
-    public List<TimeTrack> getTimeTracks() {
-        return timeTracks;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setTimeTracks(List<TimeTrack> timeTracks) {
-        this.timeTracks = timeTracks;
+    public String getStartAsLegacyString() {
+        return start.toString().replace("T", " ").replace("-", ".");
     }
 
-    public void addTimeTracks(List<TimeTrack> timeTracks) {
-        this.timeTracks.addAll(timeTracks);
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
-    public void addTimeTrack(TimeTrack timeTrack) {
-        this.timeTracks.add(timeTrack);
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public String getEndAsLegacyString() {
+        return end.toString().replace("T", " ").replace("-", ".");
+    }
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        String s = "{\n" +
+                "\"start\": \"" + start.toString() +"\",\n" +
+                "\"end\": \"" + end.toString() +"\",\n" +
+                "\"email\": \"" + email +"\"\n" +
+                "}";
+        return s;
     }
 }
