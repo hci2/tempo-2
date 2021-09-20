@@ -1,8 +1,8 @@
 package com.tempo2.application.views.recordtimetrack;
 
-import com.tempo2.application.data.entity.SamplePerson;
 import com.tempo2.application.dto.PersonTimeTrack;
 import com.tempo2.application.service.impl.HttpService;
+import com.tempo2.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -12,11 +12,9 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
-import com.tempo2.application.views.MainLayout;
+import com.vaadin.flow.router.Route;
 
 @PageTitle("Record Time Track")
 @Route(value = "record-time-track", layout = MainLayout.class)
@@ -40,7 +38,7 @@ public class RecordTimeTrackView extends HorizontalLayout {
         clearForm();
 
         record.addClickListener(e -> {
-            httpService.postTimeTrackRecord(binder.getBean()); //TODO: Request is not working, always getting 400, something is wrong with the headers
+            httpService.postTimeTrackRecord(binder.getBean());
             Notification.show("Time track for " + email.getValue() + " recorded.", 5000, Notification.Position.MIDDLE);
         });
     }

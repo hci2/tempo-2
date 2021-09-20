@@ -1,31 +1,18 @@
 package com.tempo2.application.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.tempo2.application.views.home.HomeView;
+import com.tempo2.application.views.recordtimetrack.RecordTimeTrackView;
+import com.tempo2.application.views.showtimetrack.ShowTimeTrackView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.router.PageTitle;
-import com.tempo2.application.views.home.HomeView;
-import com.tempo2.application.views.recordtimetrack.RecordTimeTrackView;
-import com.tempo2.application.views.showtimetrack.ShowTimeTrackView;
-import com.tempo2.application.views.personform.PersonFormView;
-import com.tempo2.application.views.creditcardform.CreditCardFormView;
-import com.tempo2.application.views.cardlist.CardListView;
-import com.tempo2.application.views.map.MapView;
-import com.tempo2.application.views.imagelist.ImageListView;
-import com.tempo2.application.views.checkoutform.CheckoutFormView;
-import com.tempo2.application.views.chat.ChatView;
+import com.vaadin.flow.router.RouterLink;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -113,21 +100,7 @@ public class MainLayout extends AppLayout{
 
                 new MenuItemInfo("Record Time Track", "la la-calendar-plus", RecordTimeTrackView.class), //
 
-                new MenuItemInfo("Show time track", "la la-business-time", ShowTimeTrackView.class), //
-
-                new MenuItemInfo("Person Form", "la la-user", PersonFormView.class), //
-
-                new MenuItemInfo("Credit Card Form", "", CreditCardFormView.class), //
-
-                new MenuItemInfo("Card List", "la la-list", CardListView.class), //
-
-                new MenuItemInfo("Map", "la la-map", MapView.class), //
-
-                new MenuItemInfo("Image List", "la la-th-list", ImageListView.class), //
-
-                new MenuItemInfo("Checkout Form", "", CheckoutFormView.class), //
-
-                new MenuItemInfo("Chat", "la la-comments", ChatView.class), //
+                new MenuItemInfo("Show time track", "la la-business-time", ShowTimeTrackView.class) //
 
         };
         List<RouterLink> links = new ArrayList<>();

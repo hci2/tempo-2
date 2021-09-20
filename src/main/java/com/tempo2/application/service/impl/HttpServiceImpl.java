@@ -28,7 +28,7 @@ public class HttpServiceImpl implements HttpService {
 
     @Override
     public void postTimeTrackRecord(PersonTimeTrack personTimeTrack) {
-        log.info("Invocation of method postTimeTrackRecord(PersonTimeTrack personTimeTrack)");
+        log.debug("Invocation of method postTimeTrackRecord(PersonTimeTrack personTimeTrack)");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -51,13 +51,13 @@ public class HttpServiceImpl implements HttpService {
             return;
         }
         final PersonTimeTrack body = responseEntity.getBody();
-        log.info("Status code: {}, body: {}", responseEntity.getStatusCodeValue(), body);
+        log.debug("Status code: {}, body: {}", responseEntity.getStatusCodeValue(), body);
         log.info("Created record: {}", body);
     }
 
     @Override
     public List<PersonTimeTrack> getTimeTrackRecordsFrom(String email, Integer length) {
-        log.info("Invocation of method getTimeTrackRecordsFrom(String email, Integer length)");
+        log.debug("Invocation of method getTimeTrackRecordsFrom(String email, Integer length)");
 
         ResponseEntity<List<PersonTimeTrack>> responseEntity = null;
         try {
@@ -76,14 +76,14 @@ public class HttpServiceImpl implements HttpService {
         List<PersonTimeTrack> body = responseEntity.getBody();
         body = body.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
 
-        log.info("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
+        log.debug("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
         log.info("Retrieved records: {}, for: {}", body.size(), email);
         return body;
     }
 
     @Override
     public List<PersonTimeTrack> getTimeTrackRecordsFrom(String email) {
-        log.info("Invocation of method getTimeTrackRecordsFrom(String email)");
+        log.debug("Invocation of method getTimeTrackRecordsFrom(String email)");
 
         ResponseEntity<List<PersonTimeTrack>> responseEntity = null;
         try {
@@ -102,14 +102,14 @@ public class HttpServiceImpl implements HttpService {
         List<PersonTimeTrack> body = responseEntity.getBody();
         body = body.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
 
-        log.info("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
+        log.debug("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
         log.info("Retrieved records: {}, for: {}", body.size(), email);
         return body;
     }
 
     @Override
     public List<PersonTimeTrack> getTimeTrackRecordsFrom(Integer length) {
-        log.info("Invocation of method getTimeTrackRecordsFrom(Integer length)");
+        log.debug("Invocation of method getTimeTrackRecordsFrom(Integer length)");
 
         ResponseEntity<List<PersonTimeTrack>> responseEntity = null;
         try {
@@ -128,7 +128,7 @@ public class HttpServiceImpl implements HttpService {
         List<PersonTimeTrack> body = responseEntity.getBody();
         body = body.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
 
-        log.info("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
+        log.debug("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
         log.info("Retrieved records: {}", body.size());
         return body;
     }
