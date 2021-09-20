@@ -120,6 +120,11 @@ Delete images:
 docker image rm tempo2
 ```
 
+(Optional) If Docker Hub was used for pulling image
+```
+docker image rm phipsl/tempo2:0.0.1-SNAPSHOT
+```
+
 ```
 docker image rm timetracker
 ```
