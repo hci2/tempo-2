@@ -1,5 +1,15 @@
 # Tempo 2
 
+An application to record and see time tracks of employees. It interacts with a legacy application. It can be retrieved under: https://hub.docker.com/r/alirizasaral/timetracker/.
+It is necessary to run it with port 8080 on the same machine to work.
+
+Example:
+```
+docker run -d -p 8080:8080 --name timetracker alirizasaral/timetracker:1
+```
+
+It is based on Vaadin (Java UI framework, version 21.0.1) and Java (16/17) with Spring Boot (Java framework, version 2.5.4).
+
 This project can be used as a starting point to create your own Vaadin application with Spring Boot.
 It contains all the necessary configuration and some placeholder files to get you started.
 
@@ -7,7 +17,7 @@ It contains all the necessary configuration and some placeholder files to get yo
 
 The project is a standard Maven project. To run it from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
-http://localhost:8080 in your browser.
+http://localhost:8081 in your browser.
 
 You can also import the project to your IDE of choice as you would with any
 Maven project. Read more on [how to set up a development environment for
@@ -47,14 +57,69 @@ Once the JAR file is built, you can run it using
 
 ## Deploying using Docker
 
-To build the Dockerized version of the project, run
+To build the Dockerized version of the project, run:
 
 ```
 docker build . -t tempo2:latest
 ```
 
-Once the Docker image is correctly built, you can test it locally using
+Once the Docker image is correctly built, you can test it locally using:
 
 ```
-docker run -p 8080:8080 tempo2:latest
+docker run -d -p 8081:8080 -e "SPRING_PROFILES_ACTIVE=docker" --name tempo2 tempo2:latest
+```
+
+(Optional) Setting environmental variables (e.g. with defaults):
+```
+-e "PORT=8080"
+```
+
+```
+-e "LEGACY_BACKEND_BASE_URL=http://host.docker.internal:8080/records"
+```
+
+Afterwards it is accessible under: http://localhost:8081.
+
+Stop it with the following command:
+
+```
+docker stop tempo2
+```
+
+Start it again with the following command:
+
+```
+docker start tempo2
+```
+
+## Clean up of Docker image and container
+
+(Optional) Stop the containers:
+
+```
+docker stop tempo2
+```
+
+```
+docker stop timetracker
+```
+
+Delete containers:
+
+```
+docker container rm tempo2
+```
+
+```
+docker container rm timetracker
+```
+
+Delete images:
+
+```
+docker image rm tempo2
+```
+
+```
+docker image rm timetracker
 ```

@@ -4,6 +4,7 @@ import com.tempo2.application.dto.PersonTimeTrack;
 import com.tempo2.application.util.DateTimeParserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HttpServiceImpl implements HttpService {
 
-    private final String BASE_URL = "http://localhost:8080/records";
+    @Value("${legacy-backend.base-url:http://localhost:8080/records}")
+    private String BASE_URL;
 
     @Autowired
     private RestTemplate restTemplate;

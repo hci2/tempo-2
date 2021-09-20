@@ -5,8 +5,8 @@
     <!-- Vaadin project from https://start.vaadin.com/project/77d7f9bb-1689-4ca2-912c-01d70d4eff46 -->
     <groupId>com.tempo2.application</groupId>
     <artifactId>tempo2</artifactId>
-    <name>Project base for Spring Boot and Vaadin Flow</name>
-    <version>1.0-SNAPSHOT</version>
+    <name>An application to record and see time tracks of employees.</name>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -92,23 +92,6 @@
             <artifactId>a-vaadin-helper</artifactId>
             <version>1.7.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>exampledata</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
