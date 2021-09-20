@@ -1,7 +1,7 @@
 package com.tempo2.application.service.impl;
 
-import com.sun.jna.platform.unix.solaris.LibKstat;
 import com.tempo2.application.dto.PersonTimeTrack;
+import com.tempo2.application.util.DateTimeParserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,15 +9,17 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class HttpServiceImpl implements HttpService{
+public class HttpServiceImpl implements HttpService {
 
     private final String BASE_URL = "http://localhost:8080/records";
 
@@ -28,46 +30,54 @@ public class HttpServiceImpl implements HttpService{
     public void postTimeTrackRecord(PersonTimeTrack personTimeTrack) {
         log.info("Invocation of method postTimeTrackRecord(PersonTimeTrack personTimeTrack)");
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("email", personTimeTrack.getEmail());
-        formData.add("start", personTimeTrack.getStartAsLegacyString());
-        formData.add("end", personTimeTrack.getEndAsLegacyString());
+        formData.add("start", DateTimeParserUtil.getLocalDateTimeAsLegacyString(personTimeTrack.getStart()));
+        formData.add("end", DateTimeParserUtil.getLocalDateTimeAsLegacyString(personTimeTrack.getEnd()));
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(formData, headers);
 
-//        TODO: Fix exception for binding and getting 400 (in Postman it is working with Content-Length and Host Header, https://stackoverflow.com/questions/38372422/how-to-post-form-data-with-spring-resttemplate https://stackoverflow.com/questions/65255379/spring-webclient-post-and-content-length-header-for-application-x-www-form-urlen
-//        org.springframework.web.client.HttpClientErrorException$BadRequest: 400 : [{
-//            "timestamp" : "2021-09-19T11:51:16.650+0000",
-//                    "status" : 400,
-//                    "error" : "Bad Request",
-//                    "exception" : "org.springframework.validation.BindException",
-//                    "errors" : [ {
-//                "codes" : [ "typeMis... (1701 bytes)]
-//                at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:101) ~[spring-web-5.3.9.jar:5.3.9]
-
-        ResponseEntity<String> responseEntity = restTemplate.exchange(BASE_URL,
-                HttpMethod.POST,
-                httpEntity,
-                String.class);
-        final String body = responseEntity.getBody();
-        log.info("Status code: {}, body size: {}, ", responseEntity.getStatusCodeValue(), body);
+        ResponseEntity<PersonTimeTrack> responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(BASE_URL,
+                    HttpMethod.POST,
+                    httpEntity,
+                    PersonTimeTrack.class);
+        } catch (HttpStatusCodeException httpStatusCodeException) {
+            log.warn("Exception occurred during post call: ", httpStatusCodeException);
+            return;
+        }
+        final PersonTimeTrack body = responseEntity.getBody();
+        log.info("Status code: {}, body: {}", responseEntity.getStatusCodeValue(), body);
+        log.info("Created record: {}", body);
     }
 
     @Override
     public List<PersonTimeTrack> getTimeTrackRecordsFrom(String email, Integer length) {
         log.info("Invocation of method getTimeTrackRecordsFrom(String email, Integer length)");
 
-        ResponseEntity<List<PersonTimeTrack>> responseEntity = restTemplate.exchange(BASE_URL + "?email={email}&length={length}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<PersonTimeTrack>>() {},
-                email,
-                length);
+        ResponseEntity<List<PersonTimeTrack>> responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(BASE_URL + "?email={email}&length={length}",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<PersonTimeTrack>>() {
+                    },
+                    email,
+                    length);
+        } catch (HttpStatusCodeException httpStatusCodeException) {
+            log.warn("Exception occurred during get call: ", httpStatusCodeException);
+            return Collections.emptyList();
+        }
+
         List<PersonTimeTrack> body = responseEntity.getBody();
-        log.info("Status code: {}, body size: {}, ", responseEntity.getStatusCodeValue(), body.size());
+        body = body.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        log.info("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
+        log.info("Retrieved records: {}, for: {}", body.size(), email);
         return body;
     }
 
@@ -75,28 +85,51 @@ public class HttpServiceImpl implements HttpService{
     public List<PersonTimeTrack> getTimeTrackRecordsFrom(String email) {
         log.info("Invocation of method getTimeTrackRecordsFrom(String email)");
 
-        ResponseEntity<List<PersonTimeTrack>> responseEntity = restTemplate.exchange(BASE_URL + "?email={email}", //&length={length}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<PersonTimeTrack>>() {},
-                email);//,
-                //10);
+        ResponseEntity<List<PersonTimeTrack>> responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(BASE_URL + "?email={email}", //&length={length}",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<PersonTimeTrack>>() {
+                    },
+                    email);//,
+            //10);
+        } catch (HttpStatusCodeException httpStatusCodeException) {
+            log.warn("Exception occurred during get call: ", httpStatusCodeException);
+            return Collections.emptyList();
+        }
+
         List<PersonTimeTrack> body = responseEntity.getBody();
-        log.info("Status code: {}, body size: {}, ", responseEntity.getStatusCodeValue(), body.size());
+        body = body.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        log.info("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
+        log.info("Retrieved records: {}, for: {}", body.size(), email);
         return body;
     }
 
     @Override
     public List<PersonTimeTrack> getTimeTrackRecordsFrom(Integer length) {
         log.info("Invocation of method getTimeTrackRecordsFrom(Integer length)");
-        ResponseEntity<List<PersonTimeTrack>> responseEntity = restTemplate.exchange(BASE_URL + "?offset={offset}&length={length}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<PersonTimeTrack>>() {},
-                0,
-                length);
+
+        ResponseEntity<List<PersonTimeTrack>> responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(BASE_URL + "?offset={offset}&length={length}",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<PersonTimeTrack>>() {
+                    },
+                    0,
+                    length);
+        } catch (HttpStatusCodeException httpStatusCodeException) {
+            log.warn("Exception occurred during get call: ", httpStatusCodeException);
+            return Collections.emptyList();
+        }
+
         List<PersonTimeTrack> body = responseEntity.getBody();
-        log.info("Status code: {}, body size: {}, ", responseEntity.getStatusCodeValue(), body.size());
+        body = body.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        log.info("Status code: {}, body size: {}", responseEntity.getStatusCodeValue(), body.size());
+        log.info("Retrieved records: {}", body.size());
         return body;
     }
 
