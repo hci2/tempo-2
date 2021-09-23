@@ -132,3 +132,7 @@ docker image rm phipsl/tempo2:0.0.1-SNAPSHOT
 ```
 docker image rm timetracker
 ```
+
+## Usage
+
+The Docker image is downloadable under: https://hub.docker.com/repository/docker/phipsl/tempo2.
