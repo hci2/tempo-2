@@ -1,4 +1,8 @@
-# Tempo 2
+# Tempo 2 - Job Application
+
+![timetrack-logo](https://user-images.githubusercontent.com/19223435/134476394-871b5b00-227c-45da-b40c-367e67c19932.png)
+
+## Description
 
 An application to record and see time tracks of employees. It interacts with a legacy application. It can be retrieved under: https://hub.docker.com/r/alirizasaral/timetracker/.
 It is necessary to run it with port 8080 on the same machine to work.
